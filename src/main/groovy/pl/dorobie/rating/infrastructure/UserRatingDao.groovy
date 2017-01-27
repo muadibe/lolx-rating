@@ -17,7 +17,7 @@ public class UserRatingDao implements UserRatingRepository {
 
     @Override
     UserRating getByUserId(String userId) {
-        return userRatingMongoRepository.findOne(userId)
+        return RatingMapper.map(userRatingMongoRepository.findOne(userId))
     }
 
     @Override
