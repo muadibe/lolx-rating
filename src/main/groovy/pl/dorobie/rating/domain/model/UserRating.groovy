@@ -1,6 +1,6 @@
-package pl.dorobie.rating.rest.model;
+package pl.dorobie.rating.domain.model;
 
-public class UserRatingMessage {
+public class UserRating {
     private String id;
     private int likeCount;
     private float starRate;

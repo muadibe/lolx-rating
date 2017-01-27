@@ -1,15 +1,14 @@
-package pl.dorobie.rating.rest.model;
-
-import java.util.List;
+package pl.dorobie.rating.rest.model
 
 public class UpdateRatingMessage {
-    private String id;
-    private String type;
-    private int rate;
-    private String customerId;
-    private String announceId;
-    private List<String> tags;
-    private String comment;
+    private String id
+    private String type
+    private int rate
+    private String userId
+    private String customerId
+    private String announceId
+    private List<String> tags
+    private String comment
 
     public String getId() {
         return id;
@@ -33,6 +32,14 @@ public class UpdateRatingMessage {
 
     public void setRate(int rate) {
         this.rate = rate;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getCustomerId() {
