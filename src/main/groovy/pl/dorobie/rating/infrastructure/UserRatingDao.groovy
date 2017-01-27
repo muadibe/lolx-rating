@@ -22,6 +22,7 @@ public class UserRatingDao implements UserRatingRepository {
 
     @Override
     UserRating save(UserRating userRating) {
-        return userRatingMongoRepository.save(userRating)
+        UserRatingDocument dbUserRating = userRatingMongoRepository.save(RatingMapper.map(userRating))
+        RatingMapper.map(dbUserRating)
     }
 }

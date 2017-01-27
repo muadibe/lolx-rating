@@ -6,7 +6,7 @@ import pl.dorobie.rating.domain.model.UserRating
 public class RatingMapper {
 
     public static UserRatingMessage map(UserRating userRating){
-        UserRatingMessage userRatingMessage = new UserRatingMessage(
+        new UserRatingMessage(
                 id: userRating.id,
                 likeCount: userRating.likeCount,
                 starRate: userRating.starRate
@@ -14,7 +14,7 @@ public class RatingMapper {
     }
 
     public static UpdateRating map(UpdateRatingMessage userRatingMessage){
-        UpdateRating userRating = new UpdateRating(
+        new UpdateRating(
                 id: userRatingMessage.id,
                 announceId: userRatingMessage.announceId,
                 comment: userRatingMessage.comment,

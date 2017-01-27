@@ -6,7 +6,15 @@ import pl.dorobie.rating.domain.model.UserRating
 public class RatingMapper {
 
     public static UserRatingDocument map(UserRating userRating){
-        UserRatingDocument userRatingDocument = new UserRatingDocument(
+        new UserRatingDocument(
+                id: userRating.id,
+                likeCount: userRating.likeCount,
+                starRate: userRating.starRate
+        )
+    }
+
+    public static UserRating map(UserRatingDocument userRating){
+        new UserRating(
                 id: userRating.id,
                 likeCount: userRating.likeCount,
                 starRate: userRating.starRate
@@ -14,7 +22,7 @@ public class RatingMapper {
     }
 
     public static UpdateRating map(UpdateRatingDocument userRatingDocument){
-        UpdateRating userRating = new UpdateRating(
+        new UpdateRating(
                 id: userRatingDocument.id,
                 announceId: userRatingDocument.announceId,
                 comment: userRatingDocument.comment,
@@ -27,7 +35,7 @@ public class RatingMapper {
     }
 
     public static UpdateRatingDocument map(UpdateRating updateRating){
-        UpdateRatingDocument userRating = new UpdateRatingDocument(
+        new UpdateRatingDocument(
                 id: updateRating.id,
                 announceId: updateRating.announceId,
                 comment: updateRating.comment,
