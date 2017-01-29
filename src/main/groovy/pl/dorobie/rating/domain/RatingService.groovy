@@ -15,13 +15,20 @@ class RatingService {
     UserRatingRepository userRatingRepository
 
     UserRating add(UpdateRating updateRating) {
-       def result = ratingRepository.save(updateRating)
-
-       def userRating = userRatingRepository.getByUserId(result.userId)
-       if (userRating == null){
-           return userRatingRepository.save(new UserRating(likeCount: 1, id: result.userId, starRate: 3))
-       }
-       return userRating
+        def result = ratingRepository.save(updateRating)
+        def userRating = userRatingRepository.getByUserId(result.userId)
+        if (userRating == null) {
+            userRating = new UserRating(likeCount: 0, id: result.userId, starRate: 0)
+        }
+        if (updateRating.type == "LIKE" && updateRating.rate > 0) {
+            userRating.likeCount += 1
+        }
+        if (updateRating.type == "STAR" && updateRating.rate >= 0 && updateRating.rate <= 5) {
+            userRating.starRateSum += updateRating.rate
+            userRating.starRateCount += 1
+            userRating.starRate = userRating.starRateSum / userRating.starRateCount
+        }
+        return userRatingRepository.save(userRating)
     }
 
     UserRating get(String userId) {
