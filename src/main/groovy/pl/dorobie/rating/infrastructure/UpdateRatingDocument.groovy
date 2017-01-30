@@ -14,6 +14,7 @@ public class UpdateRatingDocument {
     private String announceId
     private List<String> tags
     private String comment
+    private Date date
 
     public String getId() {
         return id;
@@ -77,5 +78,13 @@ public class UpdateRatingDocument {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    Date getDate() {
+        return date
+    }
+
+    void setDate(Date date) {
+        this.date = date
     }
 }

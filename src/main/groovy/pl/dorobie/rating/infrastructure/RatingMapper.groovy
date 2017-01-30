@@ -43,7 +43,8 @@ public class RatingMapper {
                 rate: userRatingDocument.rate,
                 userId: userRatingDocument.userId,
                 tags: userRatingDocument.tags,
-                type: userRatingDocument.type
+                type: userRatingDocument.type,
+                date: userRatingDocument.date
         )
     }
 
@@ -59,7 +60,8 @@ public class RatingMapper {
                 rate: updateRating.rate,
                 userId: updateRating.userId,
                 tags: updateRating.tags,
-                type: updateRating.type
+                type: updateRating.type,
+                date: updateRating.date
         )
     }
 }

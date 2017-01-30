@@ -15,6 +15,7 @@ class RatingService {
     UserRatingRepository userRatingRepository
 
     UserRating add(UpdateRating updateRating) {
+        updateRating.date = new Date()
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
         if (userRating == null) {
