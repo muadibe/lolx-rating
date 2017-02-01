@@ -9,7 +9,8 @@ public class RatingMapper {
         new UserRatingMessage(
                 id: userRating.id,
                 likeCount: userRating.likeCount,
-                starRate: userRating.starRate
+                starRate: userRating.starRate,
+                starRateCount: userRating.starRateCount
         )
     }
 

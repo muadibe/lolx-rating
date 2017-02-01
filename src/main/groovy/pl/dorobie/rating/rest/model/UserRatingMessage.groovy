@@ -4,6 +4,7 @@ public class UserRatingMessage {
     private String id;
     private int likeCount;
     private float starRate;
+    private int starRateCount;
 
     public String getId() {
         return id;
@@ -27,5 +28,13 @@ public class UserRatingMessage {
 
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+    }
+
+    int getStarRateCount() {
+        return starRateCount
+    }
+
+    void setStarRateCount(int starRateCount) {
+        this.starRateCount = starRateCount
     }
 }
