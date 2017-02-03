@@ -7,33 +7,35 @@ public class RatingMapper {
 
     public static UserRatingDocument map(UserRating userRating){
         if (userRating == null) {
-            return userRating
+            return null
         }
         new UserRatingDocument(
                 id: userRating.id,
                 likeCount: userRating.likeCount,
                 starRate: userRating.starRate,
                 starRateCount: userRating.starRateCount,
-                starRateSum: userRating.starRateSum
+                starRateSum: userRating.starRateSum,
+                lastComments: userRating.lastComments
         )
     }
 
     public static UserRating map(UserRatingDocument userRatingDocument){
         if (userRatingDocument == null) {
-            return userRatingDocument
+            return null
         }
         new UserRating(
                 id: userRatingDocument.id,
                 likeCount: userRatingDocument.likeCount,
                 starRate: userRatingDocument.starRate,
                 starRateCount: userRatingDocument.starRateCount,
-                starRateSum: userRatingDocument.starRateSum
+                starRateSum: userRatingDocument.starRateSum,
+                lastComments: userRatingDocument.lastComments
         )
     }
 
     public static UpdateRating map(UpdateRatingDocument userRatingDocument){
         if (userRatingDocument == null) {
-            return userRatingDocument
+            return null
         }
         new UpdateRating(
                 id: userRatingDocument.id,
@@ -50,7 +52,7 @@ public class RatingMapper {
 
     public static UpdateRatingDocument map(UpdateRating updateRating){
         if (updateRating == null) {
-            return updateRating
+            return null
         }
         new UpdateRatingDocument(
                 id: updateRating.id,

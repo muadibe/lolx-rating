@@ -2,6 +2,7 @@ package pl.dorobie.rating.infrastructure
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import pl.dorobie.rating.domain.support.Comment
 
 @Document
 public class UserRatingDocument {
@@ -11,6 +12,7 @@ public class UserRatingDocument {
     private float starRate
     private long starRateSum
     private long starRateCount
+    private List<Comment> lastComments
 
     public String getId() {
         return id;
@@ -50,5 +52,13 @@ public class UserRatingDocument {
 
     void setStarRateCount(long starRateCount) {
         this.starRateCount = starRateCount
+    }
+
+    List<Comment> getLastComments() {
+        return lastComments
+    }
+
+    void setLastComments(List<Comment> lastComments) {
+        this.lastComments = lastComments
     }
 }

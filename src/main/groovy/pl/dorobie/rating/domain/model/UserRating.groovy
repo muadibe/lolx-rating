@@ -1,4 +1,6 @@
-package pl.dorobie.rating.domain.model;
+package pl.dorobie.rating.domain.model
+
+import pl.dorobie.rating.domain.support.Comment;
 
 public class UserRating {
     private String id
@@ -6,6 +8,7 @@ public class UserRating {
     private float starRate
     private long starRateSum
     private long starRateCount
+    private List<Comment> lastComments
 
     public String getId() {
         return id;
@@ -45,5 +48,13 @@ public class UserRating {
 
     void setStarRateCount(long starRateCount) {
         this.starRateCount = starRateCount
+    }
+
+    List<Comment> getLastComments() {
+        return lastComments
+    }
+
+    void setLastComments(List<Comment> lastComments) {
+        this.lastComments = lastComments
     }
 }

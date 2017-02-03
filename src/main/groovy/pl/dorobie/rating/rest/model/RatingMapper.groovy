@@ -10,7 +10,8 @@ public class RatingMapper {
                 id: userRating.id,
                 likeCount: userRating.likeCount,
                 starRate: userRating.starRate,
-                starRateCount: userRating.starRateCount
+                starRateCount: userRating.starRateCount,
+                lastComments: userRating.lastComments != null ? userRating.lastComments : []
         )
     }
 
