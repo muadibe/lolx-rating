@@ -22,25 +22,31 @@ class RatingService {
         if (userRating == null) {
             userRating = new UserRating(likeCount: 0, id: result.userId, starRate: 0, lastComments: [])
         }
-        if (userRating.lastComments == null){
-            userRating.lastComments = []
-        } else if (userRating.lastComments.size() > 20) {
-            userRating = userRating.lastComments.subList(0, 19)
-        }
         if (updateRating.type == "LIKE" && updateRating.rate > 0) {
             userRating.likeCount += 1
-            userRating.lastComments.add(new Comment(msg: updateRating.comment))
+            updateLastComments(updateRating, userRating)
         }
         if (updateRating.type == "STAR" && updateRating.rate >= 0 && updateRating.rate <= 5) {
             userRating.starRateSum += updateRating.rate
             userRating.starRateCount += 1
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
-            userRating.lastComments.add(new Comment(msg: updateRating.comment))
+            updateLastComments(updateRating, userRating)
         }
         if (updateRating.type == "COMMENT") {
-            userRating.lastComments.add(new Comment(msg: updateRating.comment))
+            updateLastComments(updateRating, userRating)
         }
         return userRatingRepository.save(userRating)
+    }
+
+    private static void updateLastComments(UpdateRating updateRating, UserRating userRating) {
+        if (userRating.lastComments == null){
+            userRating.lastComments = []
+        } else if (userRating.lastComments.size() > 20) {
+            userRating.lastComments = userRating.lastComments.subList(0, 19)
+        }
+        if (updateRating.comment != null && !updateRating.comment.empty) {
+            userRating.lastComments.add(new Comment(msg: updateRating.comment))
+        }
     }
 
     UserRating get(String userId) {
