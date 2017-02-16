@@ -20,4 +20,10 @@ public class RatingDao implements RatingRepository {
         def ratingDocument = ratingMongoRepository.save(RatingMapper.map(updateRating))
         return RatingMapper.map(ratingDocument)
     }
+
+    @Override
+    public UpdateRating get(String id) {
+        def ratingDocument = ratingMongoRepository.findOne(id)
+        return RatingMapper.map(ratingDocument)
+    }
 }

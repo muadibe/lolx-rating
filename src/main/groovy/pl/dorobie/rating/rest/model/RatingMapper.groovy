@@ -27,4 +27,17 @@ public class RatingMapper {
                 type: userRatingMessage.type
         );
     }
+
+    public static UpdateRatingMessage map(UpdateRating userRating){
+        new UpdateRatingMessage(
+                id: userRating.id,
+                announceId: userRating.announceId,
+                comment: userRating.comment,
+                customerId: userRating.customerId,
+                rate: userRating.rate,
+                userId: userRating.userId,
+                tags: userRating.tags,
+                type: userRating.type
+        );
+    }
 }
