@@ -79,6 +79,14 @@ class RatingService {
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
             updateLastComments(updateRating, userRating)
         }
+        if (updateRating.type == "LIKE" && updateRating.rate > 0) {
+            if (updateRating.rate > 0 && lastUpdateRating.rate < 0) {
+                userRating.likeCount += 1
+            } else if (updateRating.rate < 0 && lastUpdateRating.rate > 0) {
+                userRating.likeCount -= 1
+            }
+            updateLastComments(updateRating, userRating)
+        }
         log.info("Saving user rating: {}", userRating)
         userRatingRepository.save(userRating)
     }
