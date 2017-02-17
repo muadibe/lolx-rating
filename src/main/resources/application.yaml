@@ -1,0 +1,3 @@
+publicKey:
+    dir: classpath:certs/
+    files: frontend.der
