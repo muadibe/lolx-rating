@@ -20,8 +20,17 @@ class RatingService {
     UserRatingRepository userRatingRepository
 
     UserRating add(UpdateRating updateRating) {
+        if (updateRating.customerId == null){
+            return null;
+        }
+        if (updateRating.userId.equals(updateRating.customerId)){
+            return null;
+        }
         updateRating.date = new Date()
         updateRating.id = getUpdateRatingId(updateRating.announceId, updateRating.customerId)
+        def lastUpdateRating = getVoterRate(updateRating.customerId, updateRating.announceId)
+        log.info("Last update: {}", lastUpdateRating)
+        
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
         if (userRating == null) {
@@ -40,6 +49,7 @@ class RatingService {
         if (updateRating.type == "COMMENT") {
             updateLastComments(updateRating, userRating)
         }
+        log.info("Saving user rating: {}", userRating)
         return userRatingRepository.save(userRating)
     }
 
