@@ -82,4 +82,20 @@ public class UpdateRating {
     void setDate(Date date) {
         this.date = date
     }
+
+
+    @Override
+    public String toString() {
+        return "UpdateRating{" +
+                "id='" + id + '\'' +
+                ", type='" + type + '\'' +
+                ", rate=" + rate +
+                ", userId='" + userId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", announceId='" + announceId + '\'' +
+                ", tags=" + tags +
+                ", comment='" + comment + '\'' +
+                ", date=" + date +
+                "} " + super.toString();
+    }
 }

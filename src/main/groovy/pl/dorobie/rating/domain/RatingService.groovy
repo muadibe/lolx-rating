@@ -1,5 +1,7 @@
 package pl.dorobie.rating.domain
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import pl.dorobie.rating.domain.model.UpdateRating
@@ -8,6 +10,8 @@ import pl.dorobie.rating.domain.support.Comment
 
 @Component
 class RatingService {
+
+    private static final Logger log = LoggerFactory.getLogger(RatingService.class);
 
     @Autowired
     RatingRepository ratingRepository
