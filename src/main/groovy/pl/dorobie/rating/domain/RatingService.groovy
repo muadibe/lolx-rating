@@ -19,7 +19,7 @@ class RatingService {
     @Autowired
     UserRatingRepository userRatingRepository
 
-    UserRating add(UpdateRating updateRating) {
+    UserRating updateUserRating(UpdateRating updateRating) {
         if (updateRating.customerId == null){
             return null;
         }
@@ -28,19 +28,19 @@ class RatingService {
         }
         updateRating.date = new Date()
         updateRating.id = getUpdateRatingId(updateRating.announceId, updateRating.customerId)
-        def oldUpdateRating = getVoterRate(updateRating.customerId, updateRating.announceId)
+        def lastUpdateRating = getVoterRate(updateRating.announceId, updateRating.customerId)
 
         def userRating
-        if (oldUpdateRating != null){
-            userRating = changeVote(oldUpdateRating, updateRating)
+        if (lastUpdateRating != null){
+            userRating = changeVote(lastUpdateRating, updateRating)
         } else {
-            userRating = addNewVote(updateRating)
+            userRating = addVote(updateRating)
         }
         userRating
     }
 
-    private UserRating addNewVote(UpdateRating updateRating) {
-        log.info("Add vote: {}", updateRating)
+    private UserRating addVote(UpdateRating updateRating) {
+        log.info("Adding vote: {}", updateRating)
 
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
@@ -64,15 +64,16 @@ class RatingService {
         userRatingRepository.save(userRating)
     }
 
-    private UserRating changeVote(UpdateRating oldUpdateRating, UpdateRating updateRating) {
-        log.info("Replacing vote: old:{} new:{}", oldUpdateRating, updateRating)
+    private UserRating changeVote(UpdateRating lastUpdateRating, UpdateRating updateRating) {
+        log.info("Changing vote: old:{} new:{}", lastUpdateRating, updateRating)
 
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
 
         if (updateRating.type == "STAR" && updateRating.rate >= 0 && updateRating.rate <= 5) {
-            userRating.starRateSum += updateRating.rate - oldUpdateRating.rate
+            userRating.starRateSum += updateRating.rate - lastUpdateRating.rate
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
+            updateLastComments(updateRating, userRating)
         }
         log.info("Saving user rating: {}", userRating)
         userRatingRepository.save(userRating)
@@ -93,7 +94,7 @@ class RatingService {
         userRatingRepository.getByUserId(userId)
     }
 
-    UpdateRating getVoterRate(String voterId, String announceId) {
+    UpdateRating getVoterRate(String announceId, String voterId) {
         String id = getUpdateRatingId(announceId, voterId)
         ratingRepository.get(id)
     }

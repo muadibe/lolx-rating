@@ -37,7 +37,7 @@ class AddRatingEndpoint {
         updateRating.customerId = customerId
 
         log.info("Updating rating {}", updateRating)
-        UserRating result = ratingService.add(updateRating)
+        UserRating result = ratingService.updateUserRating(updateRating)
         log.info("New user rating {}", result)
         return new ResponseEntity<>(RatingMapper.map(result), HttpStatus.ACCEPTED)
     }

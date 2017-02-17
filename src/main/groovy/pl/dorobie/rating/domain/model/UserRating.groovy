@@ -57,4 +57,17 @@ public class UserRating {
     void setLastComments(List<Comment> lastComments) {
         this.lastComments = lastComments
     }
+
+
+    @Override
+    public String toString() {
+        return "UserRating{" +
+                "id='" + id + '\'' +
+                ", likeCount=" + likeCount +
+                ", starRate=" + starRate +
+                ", starRateSum=" + starRateSum +
+                ", starRateCount=" + starRateCount +
+                ", lastComments=" + lastComments +
+                "} " + super.toString();
+    }
 }
