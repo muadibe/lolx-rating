@@ -28,8 +28,19 @@ class RatingService {
         }
         updateRating.date = new Date()
         updateRating.id = getUpdateRatingId(updateRating.announceId, updateRating.customerId)
-        def lastUpdateRating = getVoterRate(updateRating.customerId, updateRating.announceId)
-        log.info("Last update: {}", lastUpdateRating)
+        def oldUpdateRating = getVoterRate(updateRating.customerId, updateRating.announceId)
+
+        def userRating
+        if (oldUpdateRating != null){
+            userRating = changeVote(oldUpdateRating, updateRating)
+        } else {
+            userRating = addNewVote(updateRating)
+        }
+        userRating
+    }
+
+    private UserRating addNewVote(UpdateRating updateRating) {
+        log.info("Add vote: {}", updateRating)
 
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
@@ -50,7 +61,21 @@ class RatingService {
             updateLastComments(updateRating, userRating)
         }
         log.info("Saving user rating: {}", userRating)
-        return userRatingRepository.save(userRating)
+        userRatingRepository.save(userRating)
+    }
+
+    private UserRating changeVote(UpdateRating oldUpdateRating, UpdateRating updateRating) {
+        log.info("Replacing vote: old:{} new:{}", oldUpdateRating, updateRating)
+
+        def result = ratingRepository.save(updateRating)
+        def userRating = userRatingRepository.getByUserId(result.userId)
+
+        if (updateRating.type == "STAR" && updateRating.rate >= 0 && updateRating.rate <= 5) {
+            userRating.starRateSum += updateRating.rate - oldUpdateRating.rate
+            userRating.starRate = userRating.starRateSum / userRating.starRateCount
+        }
+        log.info("Saving user rating: {}", userRating)
+        userRatingRepository.save(userRating)
     }
 
     private static void updateLastComments(UpdateRating updateRating, UserRating userRating) {
@@ -65,12 +90,12 @@ class RatingService {
     }
 
     UserRating get(String userId) {
-        return userRatingRepository.getByUserId(userId)
+        userRatingRepository.getByUserId(userId)
     }
 
     UpdateRating getVoterRate(String voterId, String announceId) {
         String id = getUpdateRatingId(announceId, voterId)
-        return ratingRepository.get(id)
+        ratingRepository.get(id)
     }
 
     static String getUpdateRatingId(String announceId, String voterId) {
