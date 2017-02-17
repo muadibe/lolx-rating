@@ -21,14 +21,12 @@ class RatingService {
 
     UserRating updateUserRating(UpdateRating updateRating) {
         if (updateRating.customerId == null){
-            return null;
+            return userRatingRepository.getByUserId(updateRating.userId)
         }
         if (updateRating.userId.equals(updateRating.customerId)){
-            return null;
+            return userRatingRepository.getByUserId(updateRating.userId)
         }
-        updateRating.date = new Date()
-        updateRating.id = getUpdateRatingId(updateRating.announceId, updateRating.customerId)
-        def lastUpdateRating = getVoterRate(updateRating.announceId, updateRating.customerId)
+        def lastUpdateRating = getVoterRate(updateRating)
 
         def userRating
         if (lastUpdateRating != null){
@@ -41,11 +39,17 @@ class RatingService {
 
     private UserRating addVote(UpdateRating updateRating) {
         log.info("Adding vote: {}", updateRating)
-
+        updateRating.date = new Date()
+        updateRating.id = getUpdateRatingId(updateRating)
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
         if (userRating == null) {
-            userRating = new UserRating(likeCount: 0, id: result.userId, starRate: 0, lastComments: [])
+            userRating = new UserRating(
+                    likeCount: 0,
+                    id: result.userId,
+                    starRate: 0,
+                    lastComments: []
+            )
         }
         if (updateRating.type == "LIKE" && updateRating.rate > 0) {
             userRating.likeCount += 1
@@ -66,7 +70,7 @@ class RatingService {
 
     private UserRating changeVote(UpdateRating lastUpdateRating, UpdateRating updateRating) {
         log.info("Changing vote: old:{} new:{}", lastUpdateRating, updateRating)
-
+        updateRating.date = new Date()
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
 
@@ -94,12 +98,11 @@ class RatingService {
         userRatingRepository.getByUserId(userId)
     }
 
-    UpdateRating getVoterRate(String announceId, String voterId) {
-        String id = getUpdateRatingId(announceId, voterId)
-        ratingRepository.get(id)
+    UpdateRating getVoterRate(UpdateRating updateRating) {
+        ratingRepository.get(getUpdateRatingId(updateRating))
     }
 
-    static String getUpdateRatingId(String announceId, String voterId) {
-        announceId + '_' + voterId
+    static String getUpdateRatingId(UpdateRating updateRating) {
+        updateRating.announceId + '_' + updateRating.customerId + '_' + updateRating.type
     }
 }
