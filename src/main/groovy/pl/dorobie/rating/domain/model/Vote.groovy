@@ -29,7 +29,6 @@ public class Vote {
         this.starRate = starRate
     }
 
-
     @Override
     public String toString() {
         return "Vote{" +

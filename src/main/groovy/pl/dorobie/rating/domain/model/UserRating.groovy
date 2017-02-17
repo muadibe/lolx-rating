@@ -58,7 +58,6 @@ public class UserRating {
         this.lastComments = lastComments
     }
 
-
     @Override
     public String toString() {
         return "UserRating{" +
