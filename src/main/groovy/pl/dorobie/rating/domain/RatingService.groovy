@@ -30,7 +30,7 @@ class RatingService {
         updateRating.id = getUpdateRatingId(updateRating.announceId, updateRating.customerId)
         def lastUpdateRating = getVoterRate(updateRating.customerId, updateRating.announceId)
         log.info("Last update: {}", lastUpdateRating)
-        
+
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
         if (userRating == null) {

@@ -24,6 +24,9 @@ public class RatingDao implements RatingRepository {
     @Override
     public UpdateRating get(String id) {
         def ratingDocument = ratingMongoRepository.findOne(id)
+        if (ratingDocument == null){
+            return null
+        }
         return RatingMapper.map(ratingDocument)
     }
 }
