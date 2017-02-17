@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import pl.dorobie.rating.domain.model.UpdateRating
 import pl.dorobie.rating.domain.model.UserRating
+import pl.dorobie.rating.domain.model.Vote
 import pl.dorobie.rating.domain.support.Comment
 
 @Component
@@ -26,7 +27,7 @@ class RatingService {
         if (updateRating.userId.equals(updateRating.customerId)){
             return userRatingRepository.getByUserId(updateRating.userId)
         }
-        def lastUpdateRating = getVoterRate(updateRating)
+        def lastUpdateRating = getVoterUpdateRating(updateRating)
 
         def userRating
         if (lastUpdateRating != null){
@@ -106,8 +107,22 @@ class RatingService {
         userRatingRepository.getByUserId(userId)
     }
 
-    UpdateRating getVoterRate(UpdateRating updateRating) {
+    UpdateRating getVoterUpdateRating(UpdateRating updateRating) {
         ratingRepository.get(getUpdateRatingId(updateRating))
+    }
+
+    Vote getVote(voterId, announceId) {
+        UpdateRating starUpdateRating = getVoterUpdateRating(
+                new UpdateRating(customerId: voterId, announceId: announceId, type: "STAR")
+        )
+        UpdateRating likeUpdateRating = getVoterUpdateRating(
+                new UpdateRating(customerId: voterId, announceId: announceId, type: "LIKE")
+        )
+         new Vote(
+                like: likeUpdateRating != null ? likeUpdateRating.rate : 0,
+                starRate: starUpdateRating != null ? starUpdateRating.rate : null,
+                comment:  starUpdateRating != null ? starUpdateRating.comment : ""
+        )
     }
 
     static String getUpdateRatingId(UpdateRating updateRating) {

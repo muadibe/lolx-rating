@@ -8,31 +8,30 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import pl.dorobie.rating.domain.RatingService
-import pl.dorobie.rating.domain.model.UpdateRating
-import pl.dorobie.rating.rest.model.RatingMapper
-import pl.dorobie.rating.rest.model.UpdateRatingMessage
+import pl.dorobie.rating.rest.model.VoteMapper
+import pl.dorobie.rating.rest.model.VoteMessage
 
 @RestController
-@RequestMapping(value = "/voters-rates")
-class GetVotersRatesEndpoint {
+@RequestMapping(value = "/votes")
+class GetVotesEndpoint {
 
     RatingService ratingService
 
     @Autowired
-    public GetVotersRatesEndpoint(RatingService ratingService) {
+    public GetVotesEndpoint(RatingService ratingService) {
         this.ratingService = ratingService
     }
 
     @RequestMapping(value = "/voter/{voterId}/announce/{announceId}", method = RequestMethod.GET)
-    public ResponseEntity<UpdateRatingMessage> get(
+    public ResponseEntity<VoteMessage> get(
             @PathVariable("voterId") String voterId,
             @PathVariable("announceId") String announceId
             ) {
+        def vote = ratingService.getVote(voterId, announceId)
 
-        UpdateRating updateRating = ratingService.getVoterRate(voterId, announceId)
-        if (updateRating == null) {
+        if (vote == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND)
         }
-        return new ResponseEntity<>(RatingMapper.map(updateRating), HttpStatus.OK)
+        return new ResponseEntity<>(VoteMapper.map(vote), HttpStatus.OK)
     }
 }
