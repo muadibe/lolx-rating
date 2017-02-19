@@ -69,7 +69,7 @@ class RatingService {
         if (updateRating.type == COMMENT) {
             updateLastComments(updateRating, userRating)
         }
-
+        userRating
     }
 
     private UserRating changeVote(UpdateRating lastUpdateRating, UpdateRating updateRating) {
@@ -94,6 +94,7 @@ class RatingService {
             }
             updateLastComments(updateRating, userRating)
         }
+        userRating
     }
 
     private static void updateLastComments(UpdateRating updateRating, UserRating userRating) {
