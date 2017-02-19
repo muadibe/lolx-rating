@@ -74,9 +74,12 @@ class RatingService {
         updateRating.date = new Date()
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
+        log.info("Last user vote: {}", userRating)
 
         if (updateRating.type == "STAR" && updateRating.rate >= 0 && updateRating.rate <= 5) {
-            userRating.starRateSum += updateRating.rate - lastUpdateRating.rate
+            userRating.starRateSum += (updateRating.rate - lastUpdateRating.rate)
+            log.info("New vote sum: {}", userRating.starRateSum)
+
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
             updateLastComments(updateRating, userRating)
         }
