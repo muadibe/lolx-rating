@@ -77,7 +77,10 @@ class RatingService {
         log.info("Last user vote: {}", userRating)
 
         if (updateRating.type == "STAR" && updateRating.rate >= 0 && updateRating.rate <= 5) {
-            userRating.starRateSum += (updateRating.rate - lastUpdateRating.rate)
+            long diff = (long) updateRating.rate - (long) lastUpdateRating.rate
+            log.info("diff: {}", diff)
+
+            userRating.starRateSum = userRating.starRateSum + diff
             log.info("New vote sum: {}", userRating.starRateSum)
 
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
