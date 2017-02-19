@@ -13,6 +13,9 @@ import pl.dorobie.rating.domain.support.Comment
 class RatingService {
 
     private static final Logger log = LoggerFactory.getLogger(RatingService.class);
+    public static final String LIKE = "LIKE"
+    public static final String STAR = "STAR"
+    public static final String COMMENT = "COMMENT"
 
     @Autowired
     RatingRepository ratingRepository
@@ -35,7 +38,8 @@ class RatingService {
         } else {
             userRating = addVote(updateRating)
         }
-        userRating
+        log.info("Saving user rating: {}", userRating)
+        userRatingRepository.save(userRating)
     }
 
     private UserRating addVote(UpdateRating updateRating) {
@@ -52,41 +56,37 @@ class RatingService {
                     lastComments: []
             )
         }
-        if (updateRating.type == "LIKE" && updateRating.rate > 0) {
+        if (updateRating.type == LIKE && updateRating.rate > 0) {
             userRating.likeCount += 1
             updateLastComments(updateRating, userRating)
         }
-        if (updateRating.type == "STAR" && updateRating.rate >= 0 && updateRating.rate <= 5) {
+        if (updateRating.type == STAR && updateRating.rate >= 0 && updateRating.rate <= 5) {
             userRating.starRateSum += updateRating.rate
             userRating.starRateCount += 1
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
             updateLastComments(updateRating, userRating)
         }
-        if (updateRating.type == "COMMENT") {
+        if (updateRating.type == COMMENT) {
             updateLastComments(updateRating, userRating)
         }
-        log.info("Saving user rating: {}", userRating)
-        userRatingRepository.save(userRating)
+
     }
 
     private UserRating changeVote(UpdateRating lastUpdateRating, UpdateRating updateRating) {
         log.info("Changing vote: old:{} new:{}", lastUpdateRating, updateRating)
         updateRating.date = new Date()
+        updateRating.id = lastUpdateRating.id
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
         log.info("Last user vote: {}", userRating)
 
-        if (updateRating.type == "STAR" && updateRating.rate >= 0 && updateRating.rate <= 5) {
-            long diff = (long) updateRating.rate - (long) lastUpdateRating.rate
-            log.info("diff: {}", diff)
-
+        if (updateRating.type == STAR && updateRating.rate >= 0 && updateRating.rate <= 5) {
+            long diff = updateRating.rate - lastUpdateRating.rate
             userRating.starRateSum = userRating.starRateSum + diff
-            log.info("New vote sum: {}", userRating.starRateSum)
-
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
             updateLastComments(updateRating, userRating)
         }
-        if (updateRating.type == "LIKE" && updateRating.rate > 0) {
+        if (updateRating.type == LIKE && updateRating.rate > 0) {
             if (updateRating.rate > 0 && lastUpdateRating.rate < 0) {
                 userRating.likeCount += 1
             } else if (updateRating.rate < 0 && lastUpdateRating.rate > 0) {
@@ -94,8 +94,6 @@ class RatingService {
             }
             updateLastComments(updateRating, userRating)
         }
-        log.info("Saving user rating: {}", userRating)
-        userRatingRepository.save(userRating)
     }
 
     private static void updateLastComments(UpdateRating updateRating, UserRating userRating) {
@@ -119,10 +117,10 @@ class RatingService {
 
     Vote getVote(voterId, announceId) {
         UpdateRating starUpdateRating = getVoterUpdateRating(
-                new UpdateRating(customerId: voterId, announceId: announceId, type: "STAR")
+                new UpdateRating(customerId: voterId, announceId: announceId, type: STAR)
         )
         UpdateRating likeUpdateRating = getVoterUpdateRating(
-                new UpdateRating(customerId: voterId, announceId: announceId, type: "LIKE")
+                new UpdateRating(customerId: voterId, announceId: announceId, type: LIKE)
         )
          new Vote(
                 like: likeUpdateRating != null ? likeUpdateRating.rate : 0,
