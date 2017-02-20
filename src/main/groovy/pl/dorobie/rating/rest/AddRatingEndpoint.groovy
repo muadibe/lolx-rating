@@ -32,8 +32,7 @@ class AddRatingEndpoint {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserRatingMessage> add(@RequestHeader(value = "Authorization") String authorizationHeader,
                                                  @RequestBody @Validated UpdateRatingMessage dto) {
-        //def customerId = jwtChecker.subject(authorizationHeader)
-        def customerId = "adi"
+        def customerId = jwtChecker.subject(authorizationHeader)
         def updateRating = RatingMapper.map(dto)
         updateRating.customerId = customerId
 
