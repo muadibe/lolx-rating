@@ -111,7 +111,7 @@ class RatingService {
     }
 
     UpdateRating getVoterUpdateRating(UpdateRating updateRating) {
-        def updates  = ratingRepository.getByAnnounceIdAndUserId(updateRating.announceId, updateRating.userId)
+        def updates  = ratingRepository.getByAnnounceIdAndUserIdAndType(updateRating.announceId, updateRating.userId, updateRating.type)
         if (updates.isEmpty()){
             return null
         }

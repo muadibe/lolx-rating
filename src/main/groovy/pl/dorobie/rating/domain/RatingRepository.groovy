@@ -5,5 +5,5 @@ import pl.dorobie.rating.domain.model.UpdateRating
 interface RatingRepository {
     UpdateRating save(UpdateRating updateRating)
     public UpdateRating get(String id)
-    List<UpdateRating> getByAnnounceIdAndUserId(String announceId, String userId)
+    List<UpdateRating> getByAnnounceIdAndUserIdAndType(String announceId, String userId, String type)
 }
