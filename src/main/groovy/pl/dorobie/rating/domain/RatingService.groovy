@@ -30,6 +30,7 @@ class RatingService {
         if (updateRating.userId.equals(updateRating.customerId)){
             return userRatingRepository.getByUserId(updateRating.userId)
         }
+
         def lastUpdateRating = getVoterUpdateRating(updateRating)
 
         def userRating
@@ -45,7 +46,6 @@ class RatingService {
     private UserRating addVote(UpdateRating updateRating) {
         log.info("Adding vote: {}", updateRating)
         updateRating.date = new Date()
-        updateRating.id = getUpdateRatingId(updateRating)
         def result = ratingRepository.save(updateRating)
         def userRating = userRatingRepository.getByUserId(result.userId)
         if (userRating == null) {
@@ -58,7 +58,6 @@ class RatingService {
         }
         if (updateRating.type == LIKE && updateRating.rate > 0) {
             userRating.likeCount += 1
-            updateLastComments(updateRating, userRating)
         }
         if (updateRating.type == STAR && updateRating.rate >= 0 && updateRating.rate <= 5) {
             userRating.starRateSum += updateRating.rate
@@ -92,7 +91,6 @@ class RatingService {
             } else if (updateRating.rate < 0 && lastUpdateRating.rate > 0) {
                 userRating.likeCount -= 1
             }
-            updateLastComments(updateRating, userRating)
         }
         userRating
     }
@@ -113,7 +111,11 @@ class RatingService {
     }
 
     UpdateRating getVoterUpdateRating(UpdateRating updateRating) {
-        ratingRepository.get(getUpdateRatingId(updateRating))
+        def updates  = ratingRepository.getByAnnounceIdAndUserId(updateRating.announceId, updateRating.userId)
+        if (updates.isEmpty()){
+            return null
+        }
+        updates.sort { -it.date }[0]
     }
 
     Vote getVote(voterId, announceId) {
@@ -130,7 +132,4 @@ class RatingService {
         )
     }
 
-    static String getUpdateRatingId(UpdateRating updateRating) {
-        updateRating.announceId + '_' + updateRating.customerId + '_' + updateRating.type
-    }
 }

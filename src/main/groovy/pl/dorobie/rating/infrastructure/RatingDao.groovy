@@ -29,4 +29,12 @@ public class RatingDao implements RatingRepository {
         }
         return RatingMapper.map(ratingDocument)
     }
+
+    @Override
+    public List<UpdateRating> getByAnnounceIdAndUserId(String announceId, String userId) {
+        def ratingDocument = ratingMongoRepository.getByAnnounceIdAndUserId(announceId, userId)
+        ratingDocument.stream().map {
+            rd -> RatingMapper.map(rd)
+        }.collect()
+    }
 }
