@@ -121,10 +121,10 @@ class RatingService {
     Vote getVote(voterId, announceId) {
         log.info("getting vote voterId: {}, announceId: {}", voterId, announceId)
         UpdateRating starUpdateRating = getVoterUpdateRating(
-                new UpdateRating(customerId: voterId, announceId: announceId, type: STAR)
+                new UpdateRating(userId: voterId, announceId: announceId, type: STAR)
         )
         UpdateRating likeUpdateRating = getVoterUpdateRating(
-                new UpdateRating(customerId: voterId, announceId: announceId, type: LIKE)
+                new UpdateRating(userId: voterId, announceId: announceId, type: LIKE)
         )
         log.info("votes: {}, {}", starUpdateRating, likeUpdateRating)
         new Vote(
