@@ -31,8 +31,8 @@ public class RatingDao implements RatingRepository {
     }
 
     @Override
-    public List<UpdateRating> getByAnnounceIdAndUserIdAndType(String announceId, String userId, String type) {
-        def ratingDocument = ratingMongoRepository.getByAnnounceIdAndUserIdAndType(announceId, userId, type)
+    public List<UpdateRating> getByAnnounceIdAndCustomerIdAndType(String announceId, String userId, String type) {
+        def ratingDocument = ratingMongoRepository.getByAnnounceIdAndCustomerIdAndType(announceId, userId, type)
         ratingDocument.stream().map {
             rd -> RatingMapper.map(rd)
         }.collect()

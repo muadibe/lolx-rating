@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository
 
 interface RatingMongoRepository extends CrudRepository<UpdateRatingDocument, String> {
     List<UpdateRatingDocument> getByUserId(String userId)
-    List<UpdateRatingDocument> getByAnnounceIdAndUserIdAndType(String announceId, String userId, String type)
+    List<UpdateRatingDocument> getByAnnounceIdAndCustomerIdAndType(String announceId, String userId, String type)
 }

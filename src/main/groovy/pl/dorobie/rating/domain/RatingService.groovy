@@ -111,7 +111,7 @@ class RatingService {
     }
 
     UpdateRating getVoterUpdateRating(UpdateRating updateRating) {
-        def updates  = ratingRepository.getByAnnounceIdAndUserIdAndType(updateRating.announceId, updateRating.userId, updateRating.type)
+        def updates  = ratingRepository.getByAnnounceIdAndCustomerIdAndType(updateRating.announceId, updateRating.customerId, updateRating.type)
         if (updates.isEmpty()){
             return null
         }
@@ -121,10 +121,10 @@ class RatingService {
     Vote getVote(voterId, announceId) {
         log.info("getting vote voterId: {}, announceId: {}", voterId, announceId)
         UpdateRating starUpdateRating = getVoterUpdateRating(
-                new UpdateRating(userId: voterId, announceId: announceId, type: STAR)
+                new UpdateRating(customerId: voterId, announceId: announceId, type: STAR)
         )
         UpdateRating likeUpdateRating = getVoterUpdateRating(
-                new UpdateRating(userId: voterId, announceId: announceId, type: LIKE)
+                new UpdateRating(customerId: voterId, announceId: announceId, type: LIKE)
         )
         log.info("votes: {}, {}", starUpdateRating, likeUpdateRating)
         new Vote(
