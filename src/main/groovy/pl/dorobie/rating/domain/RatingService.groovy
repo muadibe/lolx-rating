@@ -125,9 +125,9 @@ class RatingService {
         UpdateRating likeUpdateRating = getVoterUpdateRating(
                 new UpdateRating(customerId: voterId, announceId: announceId, type: LIKE)
         )
-         new Vote(
+        new Vote(
                 like: likeUpdateRating != null ? likeUpdateRating.rate : 0,
-                starRate: starUpdateRating != null ? starUpdateRating.rate : null,
+                starRate: starUpdateRating != null ? starUpdateRating.rate : 0.0,
                 comment:  starUpdateRating != null ? starUpdateRating.comment : ""
         )
     }
