@@ -85,7 +85,7 @@ class RatingService {
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
             updateLastComments(updateRating, userRating)
         }
-        if (updateRating.type == LIKE && updateRating.rate > 0) {
+        if (updateRating.type == LIKE) {
             if (updateRating.rate > 0 && lastUpdateRating.rate < 0) {
                 userRating.likeCount += 1
             } else if (updateRating.rate < 0 && lastUpdateRating.rate > 0) {
