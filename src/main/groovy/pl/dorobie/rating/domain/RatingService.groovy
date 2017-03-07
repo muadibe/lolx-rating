@@ -59,7 +59,7 @@ class RatingService {
         if (updateRating.type == LIKE && updateRating.rate > 0) {
             userRating.likeCount += 1
         }
-        if (updateRating.type == STAR && updateRating.rate >= 0 && updateRating.rate <= 5) {
+        if (updateRating.type == STAR && updateRating.rate > 0 && updateRating.rate <= 5) {
             userRating.starRateSum += updateRating.rate
             userRating.starRateCount += 1
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
@@ -79,7 +79,7 @@ class RatingService {
         def userRating = userRatingRepository.getByUserId(result.userId)
         log.info("Last user vote: {}", userRating)
 
-        if (updateRating.type == STAR && updateRating.rate >= 0 && updateRating.rate <= 5) {
+        if (updateRating.type == STAR && updateRating.rate > 0 && updateRating.rate <= 5) {
             long diff = updateRating.rate - lastUpdateRating.rate
             userRating.starRateSum = userRating.starRateSum + diff
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
