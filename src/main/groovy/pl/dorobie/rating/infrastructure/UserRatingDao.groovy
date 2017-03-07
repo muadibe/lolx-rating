@@ -19,7 +19,7 @@ public class UserRatingDao implements UserRatingRepository {
     UserRating getByUserId(String userId) {
         def userRating = userRatingMongoRepository.findOne(userId)
         if (userRating == null){
-            return userRating
+            return null
         }
         return RatingMapper.map(userRating)
     }
