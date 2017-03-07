@@ -82,8 +82,8 @@ class RatingService {
         if (updateRating.type == STAR && updateRating.rate > 0 && updateRating.rate <= 5) {
             long diff = updateRating.rate - lastUpdateRating.rate
             userRating.starRateSum = userRating.starRateSum + diff
-            long divider = userRating.starRateCount > 0 ? userRating.starRateCount : 1
-            userRating.starRate = userRating.starRateSum / divider
+            userRating.starRateCount = userRating.starRateCount > 0 ? userRating.starRateCount : 1
+            userRating.starRate = userRating.starRateSum / userRating.starRateCount
             updateLastComments(updateRating, userRating)
         }
         if (updateRating.type == LIKE) {
