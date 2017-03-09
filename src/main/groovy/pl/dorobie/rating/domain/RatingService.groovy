@@ -30,6 +30,9 @@ class RatingService {
         if (updateRating.userId.equals(updateRating.customerId)){
             return userRatingRepository.getByUserId(updateRating.userId)
         }
+        if (updateRating.announceId == null){
+            return userRatingRepository.getByUserId(updateRating.userId)
+        }
         def lastUpdateRating = getVoterUpdateRating(updateRating)
 
         def userRating
