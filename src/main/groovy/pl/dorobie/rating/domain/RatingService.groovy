@@ -30,7 +30,6 @@ class RatingService {
         if (updateRating.userId.equals(updateRating.customerId)){
             return userRatingRepository.getByUserId(updateRating.userId)
         }
-
         def lastUpdateRating = getVoterUpdateRating(updateRating)
 
         def userRating
@@ -39,34 +38,41 @@ class RatingService {
         } else {
             userRating = addVote(updateRating)
         }
-        log.info("Saving user rating: {}", userRating)
-        userRatingRepository.save(userRating)
+        userRating
     }
 
     private UserRating addVote(UpdateRating updateRating) {
         log.info("Adding vote: {}", updateRating)
         updateRating.date = new Date()
-        def result = ratingRepository.save(updateRating)
-        def userRating = userRatingRepository.getByUserId(result.userId)
+        def userRating = userRatingRepository.getByUserId(updateRating.userId)
+        def isUpdated = false
         if (userRating == null) {
             userRating = new UserRating(
                     likeCount: 0,
-                    id: result.userId,
+                    id: updateRating.userId,
                     starRate: 0,
                     lastComments: []
             )
         }
         if (updateRating.type == LIKE && updateRating.rate > 0) {
             userRating.likeCount += 1
+            isUpdated = true
         }
         if (updateRating.type == STAR && updateRating.rate > 0 && updateRating.rate <= 5) {
             userRating.starRateSum += updateRating.rate
             userRating.starRateCount += 1
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
             updateLastComments(updateRating, userRating)
+            isUpdated = true
         }
         if (updateRating.type == COMMENT) {
             updateLastComments(updateRating, userRating)
+            isUpdated = true
+        }
+        log.info("Saving user rating ({}): {}", isUpdated, userRating)
+        if (isUpdated) {
+            ratingRepository.save(updateRating)
+            userRatingRepository.save(userRating)
         }
         userRating
     }
@@ -75,16 +81,16 @@ class RatingService {
         log.info("Changing vote: old:{} new:{}", lastUpdateRating, updateRating)
         updateRating.date = new Date()
         updateRating.id = lastUpdateRating.id
-        def result = ratingRepository.save(updateRating)
-        def userRating = userRatingRepository.getByUserId(result.userId)
+        def userRating = userRatingRepository.getByUserId(updateRating.userId)
+        def isUpdated = false
         log.info("Last user vote: {}", userRating)
 
         if (updateRating.type == STAR && updateRating.rate > 0 && updateRating.rate <= 5) {
             long diff = updateRating.rate - lastUpdateRating.rate
             userRating.starRateSum = userRating.starRateSum + diff
-            userRating.starRateCount = userRating.starRateCount > 0 ? userRating.starRateCount : 1
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
             updateLastComments(updateRating, userRating)
+            isUpdated = true
         }
         if (updateRating.type == LIKE) {
             if (updateRating.rate > 0 && lastUpdateRating.rate < 0) {
@@ -92,6 +98,12 @@ class RatingService {
             } else if (updateRating.rate < 0 && lastUpdateRating.rate > 0) {
                 userRating.likeCount -= 1
             }
+            isUpdated = true
+        }
+        log.info("Saving user rating ({}): {}", isUpdated, userRating)
+        if (isUpdated) {
+            ratingRepository.save(updateRating)
+            userRatingRepository.save(userRating)
         }
         userRating
     }
