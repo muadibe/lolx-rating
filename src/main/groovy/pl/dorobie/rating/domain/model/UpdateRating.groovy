@@ -6,6 +6,7 @@ public class UpdateRating {
     private int rate;
     private String userId;
     private String customerId;
+    private String voterNick;
     private String announceId;
     private List<String> tags;
     private String comment;
@@ -83,6 +84,15 @@ public class UpdateRating {
         this.date = date
     }
 
+    String getVoterNick() {
+        return voterNick
+    }
+
+    void setVoterNick(String voterNick) {
+        this.voterNick = voterNick
+    }
+
+
     @Override
     public String toString() {
         return "UpdateRating{" +
@@ -91,6 +101,7 @@ public class UpdateRating {
                 ", rate=" + rate +
                 ", userId='" + userId + '\'' +
                 ", customerId='" + customerId + '\'' +
+                ", voterNick='" + voterNick + '\'' +
                 ", announceId='" + announceId + '\'' +
                 ", tags=" + tags +
                 ", comment='" + comment + '\'' +

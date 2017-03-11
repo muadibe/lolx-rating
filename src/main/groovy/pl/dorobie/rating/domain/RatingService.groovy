@@ -118,7 +118,11 @@ class RatingService {
             userRating.lastComments = userRating.lastComments.subList(0, 19)
         }
         if (updateRating.comment != null && !updateRating.comment.empty) {
-            userRating.lastComments.add(new Comment(msg: updateRating.comment))
+            userRating.lastComments.add(new Comment(
+                stars: updateRating.rate,
+                nick: updateRating.voterNick,
+                msg: updateRating.comment)
+            )
         }
     }
 
