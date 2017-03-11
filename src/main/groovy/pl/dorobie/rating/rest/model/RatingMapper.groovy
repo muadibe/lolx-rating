@@ -24,7 +24,8 @@ public class RatingMapper {
                 rate: userRatingMessage.rate,
                 userId: userRatingMessage.userId,
                 tags: userRatingMessage.tags,
-                type: userRatingMessage.type
+                type: userRatingMessage.type,
+                voterNick: userRatingMessage.voterNick
         );
     }
 

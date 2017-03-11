@@ -9,6 +9,7 @@ public class UpdateRatingMessage {
     private String announceId
     private List<String> tags
     private String comment
+    private String voterNick
 
     public String getId() {
         return id;
@@ -72,5 +73,13 @@ public class UpdateRatingMessage {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    String getVoterNick() {
+        return voterNick
+    }
+
+    void setVoterNick(String voterNick) {
+        this.voterNick = voterNick
     }
 }
