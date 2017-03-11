@@ -35,7 +35,7 @@ class AddRatingEndpoint {
         def customerId = jwtChecker.subject(authorizationHeader)
         def updateRating = RatingMapper.map(dto)
         updateRating.customerId = customerId
-
+        updateRating.voterNick = customerId
         log.info("Updating rating {}", updateRating)
         UserRating result = ratingService.updateUserRating(updateRating)
         log.info("New user rating {}", result)
