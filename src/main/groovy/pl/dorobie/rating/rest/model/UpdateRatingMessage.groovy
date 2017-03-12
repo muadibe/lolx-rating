@@ -9,7 +9,6 @@ public class UpdateRatingMessage {
     private int rate
     @NotEmpty
     private String userId
-    @NotEmpty
     private String customerId
     @NotEmpty
     private String announceId
