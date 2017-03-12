@@ -39,6 +39,9 @@ class AddRatingEndpoint {
         updateRating.customerId = customerId
         log.info("Updating rating {}", updateRating)
         UserRating result = ratingService.updateUserRating(updateRating)
+        if (result == null) {
+            return new ResponseEntity<>("User rating not found", HttpStatus.NOT_FOUND)
+        }
         log.info("New user rating {}", result)
         return new ResponseEntity<>(RatingMapper.map(result), HttpStatus.ACCEPTED)
     }
