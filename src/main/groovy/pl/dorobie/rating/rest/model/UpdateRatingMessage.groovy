@@ -1,11 +1,17 @@
 package pl.dorobie.rating.rest.model
 
+import org.hibernate.validator.constraints.NotEmpty
+
 public class UpdateRatingMessage {
     private String id
+    @NotEmpty
     private String type
     private int rate
+    @NotEmpty
     private String userId
+    @NotEmpty
     private String customerId
+    @NotEmpty
     private String announceId
     private List<String> tags
     private String comment

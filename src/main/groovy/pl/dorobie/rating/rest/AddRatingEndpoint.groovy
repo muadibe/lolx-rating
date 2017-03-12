@@ -14,6 +14,8 @@ import pl.dorobie.rating.rest.model.RatingMapper
 import pl.dorobie.rating.rest.model.UpdateRatingMessage
 import pl.dorobie.rating.rest.model.UserRatingMessage
 
+import javax.validation.constraints.NotNull
+
 @RestController
 @RequestMapping(value = "/ratings")
 class AddRatingEndpoint {
@@ -31,7 +33,7 @@ class AddRatingEndpoint {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserRatingMessage> add(@RequestHeader(value = "Authorization") String authorizationHeader,
-                                                 @RequestBody @Validated UpdateRatingMessage dto) {
+                                                 @RequestBody @Validated @NotNull UpdateRatingMessage dto) {
         def customerId = jwtChecker.subject(authorizationHeader)
         def updateRating = RatingMapper.map(dto)
         updateRating.customerId = customerId
