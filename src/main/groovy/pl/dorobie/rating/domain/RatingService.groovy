@@ -115,11 +115,12 @@ class RatingService {
         if (userRating.lastComments == null){
             userRating.lastComments = []
         } else if (userRating.lastComments.size() > 20) {
-            userRating.lastComments = userRating.lastComments.subList(0, 20)
+            userRating.lastComments = userRating.lastComments.subList(1, 20)
         }
         if (updateRating.comment != null
                 && !updateRating.comment.empty
                 && updateRating.comment != lastComment) {
+
             userRating.lastComments.add(new Comment(
                 stars: updateRating.rate,
                 nick: updateRating.voterNick,
