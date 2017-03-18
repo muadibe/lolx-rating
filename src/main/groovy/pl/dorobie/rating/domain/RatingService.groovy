@@ -92,7 +92,7 @@ class RatingService {
             long diff = updateRating.rate - lastUpdateRating.rate
             userRating.starRateSum = userRating.starRateSum + diff
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
-            updateLastComments(updateRating, userRating)
+            updateLastComments(updateRating, userRating, lastUpdateRating.comment)
             isUpdated = true
         }
         if (updateRating.type == LIKE) {
@@ -111,13 +111,15 @@ class RatingService {
         userRating
     }
 
-    private static void updateLastComments(UpdateRating updateRating, UserRating userRating) {
+    private static void updateLastComments(UpdateRating updateRating, UserRating userRating, String lastComment) {
         if (userRating.lastComments == null){
             userRating.lastComments = []
         } else if (userRating.lastComments.size() > 20) {
-            userRating.lastComments = userRating.lastComments.subList(0, 19)
+            userRating.lastComments = userRating.lastComments.subList(0, 20)
         }
-        if (updateRating.comment != null && !updateRating.comment.empty) {
+        if (updateRating.comment != null
+                && !updateRating.comment.empty
+                && updateRating.comment != lastComment) {
             userRating.lastComments.add(new Comment(
                 stars: updateRating.rate,
                 nick: updateRating.voterNick,
