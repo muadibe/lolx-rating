@@ -114,13 +114,14 @@ class RatingService {
     private static void updateLastComments(UpdateRating updateRating, UserRating userRating, String lastComment) {
         if (userRating.lastComments == null){
             userRating.lastComments = []
-        } else if (userRating.lastComments.size() > 20) {
-            userRating.lastComments = userRating.lastComments.subList(1, 20)
         }
         if (updateRating.comment != null
                 && !updateRating.comment.empty
                 && updateRating.comment != lastComment) {
 
+            if (userRating.lastComments.size() > 19) {
+                userRating.lastComments = userRating.lastComments.subList(1, 20)
+            }
             userRating.lastComments.add(new Comment(
                 stars: updateRating.rate,
                 nick: updateRating.voterNick,
