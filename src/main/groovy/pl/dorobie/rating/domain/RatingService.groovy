@@ -65,11 +65,11 @@ class RatingService {
             userRating.starRateSum += updateRating.rate
             userRating.starRateCount += 1
             userRating.starRate = userRating.starRateSum / userRating.starRateCount
-            updateLastComments(updateRating, userRating)
+            updateLastComments(updateRating, userRating, null)
             isUpdated = true
         }
         if (updateRating.type == COMMENT) {
-            updateLastComments(updateRating, userRating)
+            updateLastComments(updateRating, userRating, null)
             isUpdated = true
         }
         log.info("Saving user rating ({}): {}", isUpdated, userRating)
