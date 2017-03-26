@@ -40,17 +40,15 @@ public class UserDetailsClient implements UserDetailsProvider {
     }
 
     private ResponseEntity<OAuthUserDetails> getDetails(String userId, String authorizationHeader) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", "application/json");
-        headers.set("Content-type", "application/json");
-        headers.set("Authorization", authorizationHeader);
-        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        HttpHeaders headers = new HttpHeaders()
+        headers.set("Authorization", authorizationHeader)
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers)
 
         return oauthRestTemplate.exchange(
                 oauthDetailsUrl + "/users/" + userId,
                 HttpMethod.GET,
                 requestEntity,
-                String.class
+                OAuthUserDetails.class
         );
     }
 }
