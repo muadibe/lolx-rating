@@ -1,3 +1,7 @@
 publicKey:
     dir: classpath:certs/
     files: frontend.der
+
+oauth:
+  details:
+    url: https://lolx-auth.herokuapp.com

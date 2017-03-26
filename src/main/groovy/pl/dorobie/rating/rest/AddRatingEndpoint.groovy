@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.dorobie.rating.domain.RatingService
+import pl.dorobie.rating.domain.UserDetailsProvider
 import pl.dorobie.rating.domain.jwt.JwtChecker
 import pl.dorobie.rating.domain.model.UserRating
 import pl.dorobie.rating.rest.model.RatingMapper
@@ -22,12 +23,14 @@ class AddRatingEndpoint {
 
     private static final Logger log = LoggerFactory.getLogger(RatingService.class);
 
-    RatingService ratingService;
+    RatingService ratingService
+    UserDetailsProvider userDetailsProvider
     JwtChecker jwtChecker
 
     @Autowired
-    public AddRatingEndpoint(RatingService ratingService, JwtChecker jwtChecker) {
-        this.ratingService = ratingService;
+    AddRatingEndpoint(RatingService ratingService, UserDetailsProvider userDetailsProvider, JwtChecker jwtChecker) {
+        this.ratingService = ratingService
+        this.userDetailsProvider = userDetailsProvider
         this.jwtChecker = jwtChecker
     }
 
@@ -37,6 +40,10 @@ class AddRatingEndpoint {
         def customerId = jwtChecker.subject(authorizationHeader)
         def updateRating = RatingMapper.map(dto)
         updateRating.customerId = customerId
+
+        def details = userDetailsProvider.getUserDetails(updateRating.customerId, authorizationHeader)
+        updateRating.voterNick = details.nick
+
         log.info("Updating rating {}", updateRating)
         UserRating result = ratingService.updateUserRating(updateRating)
         if (result == null) {
