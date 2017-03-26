@@ -31,13 +31,8 @@ public class UserDetailsClient implements UserDetailsProvider {
     UserDetails getUserDetails(String userId, String jwt) {
         try {
             def response = getDetails(userId, jwt)
-
-            def details = new UserDetails(
-                    id: response.body.id,
-                    nick: response.body.nick,
-                    email: response.body.email
-            )
-            return details
+            log.info("resp user details", response.body)
+            return new UserDetails(nick: response.body.nick)
         } catch (Exception e) {
             log.error("cannot resolve user nick: ", e)
             return new UserDetails(nick: userId)
