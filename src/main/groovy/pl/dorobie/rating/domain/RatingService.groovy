@@ -130,10 +130,12 @@ class RatingService {
                 userRating.lastComments = userRating.lastComments.subList(1, 20)
             }
             userRating.lastComments.add(new Comment(
-                stars: updateRating.rate,
-                nick: updateRating.voterNick,
-                msg: updateRating.comment,
-                date: formatter.format(ZonedDateTime.now()))
+                    stars: updateRating.rate,
+                    nick: updateRating.voterNick,
+                    msg: updateRating.comment,
+                    date: formatter.format(ZonedDateTime.now()),
+                    userId: updateRating.customerId
+                )
             )
         }
     }
