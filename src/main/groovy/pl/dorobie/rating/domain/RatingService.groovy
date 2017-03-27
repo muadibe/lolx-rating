@@ -129,7 +129,7 @@ class RatingService {
             if (userRating.lastComments.size() > 19) {
                 userRating.lastComments = userRating.lastComments.subList(1, 20)
             }
-            userRating.lastComments.add(new Comment(
+            userRating.lastComments.add(0, new Comment(
                     stars: updateRating.rate,
                     nick: updateRating.voterNick,
                     msg: updateRating.comment,
