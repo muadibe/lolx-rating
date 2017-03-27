@@ -9,13 +9,19 @@ import pl.dorobie.rating.domain.model.UserRating
 import pl.dorobie.rating.domain.model.Vote
 import pl.dorobie.rating.domain.support.Comment
 
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 @Component
 class RatingService {
 
-    private static final Logger log = LoggerFactory.getLogger(RatingService.class);
+    private static final Logger log = LoggerFactory.getLogger(RatingService.class)
     public static final String LIKE = "LIKE"
     public static final String STAR = "STAR"
     public static final String COMMENT = "COMMENT"
+
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
 
     @Autowired
     RatingRepository ratingRepository
@@ -125,7 +131,8 @@ class RatingService {
             userRating.lastComments.add(new Comment(
                 stars: updateRating.rate,
                 nick: updateRating.voterNick,
-                msg: updateRating.comment)
+                msg: updateRating.comment,
+                date: formatter.format(Instant.now()))
             )
         }
     }

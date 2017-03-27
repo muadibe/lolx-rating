@@ -4,6 +4,7 @@ public class Comment {
     private String nick
     private String msg
     private int stars
+    private String date
 
     String getNick() {
         return nick
@@ -27,5 +28,13 @@ public class Comment {
 
     void setStars(int stars) {
         this.stars = stars
+    }
+
+    String getDate() {
+        return date
+    }
+
+    void setDate(String date) {
+        this.date = date
     }
 }
