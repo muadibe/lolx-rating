@@ -11,6 +11,7 @@ import pl.dorobie.rating.domain.support.Comment
 
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @Component
@@ -132,7 +133,7 @@ class RatingService {
                 stars: updateRating.rate,
                 nick: updateRating.voterNick,
                 msg: updateRating.comment,
-                date: formatter.format(Instant.now()))
+                date: formatter.format(ZonedDateTime.now()))
             )
         }
     }
