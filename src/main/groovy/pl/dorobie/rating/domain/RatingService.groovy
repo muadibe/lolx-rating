@@ -134,7 +134,7 @@ class RatingService {
                     nick: updateRating.voterNick,
                     msg: updateRating.comment,
                     date: formatter.format(ZonedDateTime.now()),
-                    voterId: updateRating.customerId
+                    userId: updateRating.customerId
                 )
             )
         }
