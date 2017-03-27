@@ -22,7 +22,7 @@ class RatingService {
     public static final String STAR = "STAR"
     public static final String COMMENT = "COMMENT"
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
     @Autowired
     RatingRepository ratingRepository
@@ -129,6 +129,7 @@ class RatingService {
             if (userRating.lastComments.size() > 19) {
                 userRating.lastComments = userRating.lastComments.subList(1, 20)
             }
+            //TODO replace by userId if comment added
             userRating.lastComments.add(0, new Comment(
                     stars: updateRating.rate,
                     nick: updateRating.voterNick,
