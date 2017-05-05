@@ -9,8 +9,6 @@ import pl.dorobie.rating.domain.model.UserRating
 import pl.dorobie.rating.domain.model.Vote
 import pl.dorobie.rating.domain.support.Comment
 
-import java.time.Instant
-import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -129,15 +127,22 @@ class RatingService {
             if (userRating.lastComments.size() > 19) {
                 userRating.lastComments = userRating.lastComments.subList(1, 20)
             }
-            //TODO replace by userId if comment added
-            userRating.lastComments.add(0, new Comment(
-                    stars: updateRating.rate,
-                    nick: updateRating.voterNick,
-                    msg: updateRating.comment,
-                    date: formatter.format(ZonedDateTime.now()),
-                    userId: updateRating.customerId
+
+            def commentUpdate = userRating.lastComments.find { it -> it.userId == updateRating.customerId}
+            if (commentUpdate != null) {
+                commentUpdate.msg = updateRating.comment
+                commentUpdate.stars = updateRating.rate
+                commentUpdate.date = formatter.format(ZonedDateTime.now())
+            } else {
+                userRating.lastComments.add(0, new Comment(
+                        stars: updateRating.rate,
+                        nick: updateRating.voterNick,
+                        msg: updateRating.comment,
+                        date: formatter.format(ZonedDateTime.now()),
+                        userId: updateRating.customerId
                 )
-            )
+                )
+            }
         }
     }
 
